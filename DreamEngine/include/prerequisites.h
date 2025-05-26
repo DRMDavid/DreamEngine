@@ -1,21 +1,25 @@
+// Estilo de codificación:
+// - camelCase para variables y métodos
+// - PascalCase para clases
+// - Tabulación: 2 espacios
+// - Líneas de 80 a 90 caracteres máximo
+// - Prefijo g_ para variables globales
+
 #pragma once
-// Librerias STD
-
-// Librerias STD
-
+// STD libraries
 #include <iostream>
 #include <string>
-#include <sstream>
+#include <Sstream>
 #include <vector>
 #include <thread>
 #include <map>
 #include <fstream>
 #include <unordered_map>
 
-// Third Parties
+
+//third party libraries
 #include <SFML/Graphics.hpp>
 
-//Imgui
 
 // MACRO for safe release of resources
 #define SAFE_PTR_RELEASE(x) if(x != nullptr) { delete x; x = nullptr; }
@@ -36,3 +40,14 @@
     std::cerr << os_.str();                                       \
     exit(1);                                                      \
 }
+
+//enums
+enum
+    ShapeType
+{
+    EMPTY = 0,
+    CIRCLE = 1,
+    RECTANGLE = 2,
+    TRIANGLE = 3,
+    POLYGON = 4
+};

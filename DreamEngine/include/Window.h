@@ -10,34 +10,34 @@
 
 #pragma once
 #include "Prerequisites.h"
-#include "Window.h"
-class BaseApp
-{
+
+class
+	Window {
 public:
-	BaseApp() = default;
-	~BaseApp();
+	Window() = default;
+	Window(int width, int height, const std::string& title);
+	~Window();
 
-	//execution of the app in main
-	int
-		run();
+	void
+		handleEvents();
 
-	//initialization function
 	bool
-		init();
-
-	//per-frame update function
-	void
-		update();
-
-	//rendering function
-	void
-		render();
+		isOpen() const;
 
 	void
-		Destroy();
+		clear(const sf::Color& color = sf::Color(0, 0, 0, 225));
+
+	void
+		draw(const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default);
+
+	void
+		display();
+
+	void
+		destroy();
 
 private:
-	Window* m_window;
-	sf::CircleShape* m_circle;
+	sf::RenderWindow* m_window;
+	sf::View m_view;
 };
-
+#pragma once
