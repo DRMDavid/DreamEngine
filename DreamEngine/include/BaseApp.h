@@ -1,43 +1,51 @@
-// Estilo de codificación:
-// - camelCase para variables y métodos
-// - PascalCase para clases
-// - Tabulación: 2 espacios
-// - Líneas de 80 a 90 caracteres máximo
-// - Prefijo g_ para variables globales
-// - Las clases y estructuras se definen con la llave de apertura en la misma línea
-// - Los métodos dentro de clases se declaran con salto de línea entre el tipo y el nombre
-// - La apertura del cuerpo del método se realiza en una nueva línea
-
 #pragma once
 #include "Prerequisites.h"
 #include "Window.h"
-class BaseApp
-{
+
+/**
+ * @class BaseApp
+ * @brief Clase principal encargada del ciclo de vida de la aplicación.
+ */
+class
+  BaseApp {
 public:
-	BaseApp() = default;
-	~BaseApp();
+  BaseApp() = default;
 
-	//execution of the app in main
-	int
-		run();
+  ~BaseApp();
 
-	//initialization function
-	bool
-		init();
+  /**
+   * @brief Ejecuta el ciclo principal de la aplicación.
+   * @return Código de salida del programa (0 si fue exitoso).
+   */
+  int
+    run();
 
-	//per-frame update function
-	void
-		update();
+  /**
+   * @brief Inicializa los recursos de la aplicación.
+   * @return true si la inicialización fue exitosa.
+   */
+  bool
+    init();
 
-	//rendering function
-	void
-		render();
+  /**
+   * @brief Actualiza la lógica de la aplicación por frame.
+   */
+  void
+    update();
 
-	void
-		Destroy();
+  /**
+   * @brief Renderiza los elementos visuales.
+   */
+  void
+    render();
+
+  /**
+   * @brief Libera los recursos utilizados por la aplicación.
+   */
+  void
+    destroy();
 
 private:
-	Window* m_window;
-	sf::CircleShape* m_circle;
+  Window* m_window;           ///< Puntero a la ventana principal.
+  sf::CircleShape* m_circle;  ///< Figura a renderizar.
 };
-

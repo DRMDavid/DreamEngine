@@ -1,53 +1,73 @@
-// Estilo de codificación:
-// - camelCase para variables y métodos
-// - PascalCase para clases
-// - Tabulación: 2 espacios
-// - Líneas de 80 a 90 caracteres máximo
-// - Prefijo g_ para variables globales
-
 #pragma once
-// STD libraries
+
+// ==============================
+// Librerías estándar (STD)
+// ==============================
 #include <iostream>
 #include <string>
-#include <Sstream>
+#include <sstream>
 #include <vector>
 #include <thread>
 #include <map>
 #include <fstream>
 #include <unordered_map>
 
-
-//third party libraries
+// ==============================
+// Librerías de terceros
+// ==============================
 #include <SFML/Graphics.hpp>
 
+// ==============================
+// Macros
+// ==============================
 
-// MACRO for safe release of resources
+/**
+ * @brief Libera de forma segura un puntero dinámico.
+ */
 #define SAFE_PTR_RELEASE(x) if(x != nullptr) { delete x; x = nullptr; }
 
-#define MESSAGE(classObj, method, state)                      \
-{                                                             \
-    std::ostringstream os_;                                   \
-    os_ << classObj << "::" << method << " : "                \
-        << "[CREATION OF RESOURCE" << ": " << state "] \n";\
-    std::cerr << os_.str();                                   \
+ /**
+  * @brief Imprime mensaje de creación de recurso.
+  * @param classObj Nombre de la clase.
+  * @param method   Método donde se creó el recurso.
+  * @param state    Estado o tipo de recurso creado.
+  */
+#define MESSAGE(classObj, method, state)                        \
+{                                                               \
+  std::ostringstream os_;                                       \
+  os_ << classObj << "::" << method << " : "                    \
+      << "[CREATION OF RESOURCE : " << state << "]\n";          \
+  std::cerr << os_.str();                                       \
 }
 
-#define ERROR(classObj, method, errorMSG)                         \
-{                                                                 \
-    std::ostringstream os_;                                       \
-    os_ << "ERROR : " << classObj << "::" << method << " : "      \
-        << "  Error in data from params [" << errorMSG"] \n"; \
-    std::cerr << os_.str();                                       \
-    exit(1);                                                      \
+  /**
+   * @brief Imprime error y finaliza ejecución.
+   * @param classObj Nombre de la clase.
+   * @param method   Método donde ocurrió el error.
+   * @param errorMSG Mensaje de error.
+   */
+#define ERROR(classObj, method, errorMSG)                       \
+{                                                               \
+  std::ostringstream os_;                                       \
+  os_ << "ERROR : " << classObj << "::" << method << " : "      \
+      << "Error in data from params [" << errorMSG << "]\n";    \
+  std::cerr << os_.str();                                       \
+  exit(1);                                                      \
 }
 
-//enums
+   // ==============================
+   // Enumeraciones
+   // ==============================
+
+   /**
+    * @enum ShapeType
+    * @brief Tipos de figura compatibles.
+    */
 enum
-    ShapeType
-{
-    EMPTY = 0,
-    CIRCLE = 1,
-    RECTANGLE = 2,
-    TRIANGLE = 3,
-    POLYGON = 4
+  ShapeType {
+  EMPTY = 0, ///< No definido
+  CIRCLE = 1, ///< Círculo
+  RECTANGLE = 2, ///< Rectángulo
+  TRIANGLE = 3, ///< Triángulo
+  POLYGON = 4  ///< Polígono personalizado
 };

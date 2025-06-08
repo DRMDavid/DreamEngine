@@ -40,7 +40,7 @@ BaseApp::init()
 	m_window = new Window(800, 600, "DreamEngine");
 	//m_window = new sf::RenderWindow(sf::VideoMode(800, 600), "DreamEngine");
 	m_circle = new sf::CircleShape(100.0f); // radio 100
-	m_circle->setFillColor(sf::Color::Green);
+	m_circle->setFillColor(sf::Color::Magenta);
 	m_circle->setPosition(200.f, 150.f);
 	return true;
 }
