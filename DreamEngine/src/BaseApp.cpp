@@ -1,66 +1,64 @@
-// Estilo de codificación:
-// - camelCase para variables y métodos
-// - PascalCase para clases
-// - Tabulación: 2 espacios
-// - Líneas de 80 a 90 caracteres máximo
-// - Prefijo g_ para variables globales
-// - Las clases y estructuras se definen con la llave de apertura en la misma línea
-// - Los métodos dentro de clases se declaran con salto de línea entre el tipo y el nombre
-// - La apertura del cuerpo del método se realiza en una nueva línea
-
 #include "BaseApp.h"
 
-// Destructor implementation
-BaseApp::~BaseApp()
-{
+BaseApp::~BaseApp() {
 }
 
-
 int
-BaseApp::run()
-{
+BaseApp::run() {
 	if (!init()) {
 		ERROR("BaseApp",
 			"run",
-			"Initializes result on a false statement, check method validations");
+			"Initializes result on a false statemente, check method validations");
 	}
-	while (m_window->isOpen()) {
-		m_window->handleEvents();
+
+	while (m_windowPtr->isOpen()) {
+		m_windowPtr->handleEvents();
 		update();
 		render();
 	}
-	Destroy();
+
+	destroy();
 	return 0;
 }
 
-// Initialization, update, render, destroy, and event handling methods
 bool
-BaseApp::init()
-{
-	m_window = new Window(800, 600, "DreamEngine");
-	//m_window = new sf::RenderWindow(sf::VideoMode(800, 600), "DreamEngine");
-	m_circle = new sf::CircleShape(100.0f); // radio 100
-	m_circle->setFillColor(sf::Color::Magenta);
-	m_circle->setPosition(200.f, 150.f);
+BaseApp::init() {
+	m_windowPtr = EngineUtilities 
+	::MakeShared<Window>(1920, 1080, "DreamEngine");
+	if (!m_windowPtr) {
+		ERROR("BaseApp",
+			"init",
+			"Failed to create window pointer, check memory allocation");
+		return false;
+	}
+
+	// Create a circle shape
+	m_shapePtr = EngineUtilities::MakeShared<CShape>();
+	if (m_shapePtr)
+	{
+		m_shapePtr->createShape(ShapeType::TRIANGLE);
+		m_shapePtr->setFillColor(sf::Color::Magenta);
+		m_shapePtr->setPosition(200.f, 150.f);
+	}
 	return true;
 }
+
 void
-BaseApp::update()
-{
-	// Update the application state
-}
-void
-BaseApp::render()
-{
-	m_window->clear();
-	m_window->draw(*m_circle);
-	m_window->display();
-}
-void
-BaseApp::Destroy()
-{
-	delete m_circle;
-	m_window->destroy();
+BaseApp::update() {
 }
 
+void
+BaseApp::render() {
+	if (!m_windowPtr) {
+		return;
+	}
+	m_windowPtr->clear();
+	if (m_shapePtr) {
+		m_shapePtr->render(m_windowPtr);
+	}
+	m_windowPtr->display();
+}
 
+void
+BaseApp::destroy() {
+}

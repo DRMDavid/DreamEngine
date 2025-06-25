@@ -1,125 +1,83 @@
-// Estilo de codificación:
-// - camelCase para variables y métodos
-// - PascalCase para clases
-// - Tabulación: 2 espacios
-// - Líneas de 80 a 90 caracteres máximo
-// - Prefijo g_ para variables globales
-// - Las clases y estructuras se definen con la llave de apertura en la misma línea
-// - Los métodos dentro de clases se declaran con salto de línea entre el tipo y el nombre
-// - La apertura del cuerpo del método se realiza en una nueva línea
-
 #include "CShape.h"
 #include "Window.h"
 
-sf::Shape*
-Cshape::createShape(ShapeType shapeType)
-{
-	switch (shapeType)
-	{
-	case ShapeType::CIRCLE:
-	{
-		sf::CircleShape* circle = new sf::CircleShape(10.0f);
-		circle->setFillColor(sf::Color::Green);
-		m_shape = circle;
-		return circle;
-	}
-	case ShapeType::RECTANGLE:
-	{
-		sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(100.0f, 50.0f));
-		rectangle->setFillColor(sf::Color::Red);
-		m_shape = rectangle;
-		return rectangle;
-	}
-	case ShapeType::TRIANGLE:
-	{
-		sf::ConvexShape* triangle = new sf::ConvexShape(3);
-		triangle->setPointCount(3);
-		triangle->setPoint(0, sf::Vector2f(0.0f, 0.0f));
-		triangle->setPoint(1, sf::Vector2f(50.0f, 100.0f));
-		triangle->setPoint(2, sf::Vector2f(100.0f, 0.0f));
-		triangle->setFillColor(sf::Color::Blue);
-		m_shape = triangle;
-		return triangle;
-	}
-	case ShapeType::POLYGON:
-	{
-		sf::ConvexShape* polygon = new sf::ConvexShape(5);
-		polygon->setPoint(0, sf::Vector2f(0.0f, 0.0f));
-		polygon->setPoint(1, sf::Vector2f(50.0f, 100.0f));
-		polygon->setPoint(2, sf::Vector2f(100.0f, 50.0f));
-		polygon->setPoint(3, sf::Vector2f(150.0f, 100.0f));
-		polygon->setPoint(4, sf::Vector2f(200.0f, 50.0f));
-		polygon->setFillColor(sf::Color::Yellow);
-		m_shape = polygon;
-		return polygon;
-	}
-	default:
-		break;
-	}
-	return nullptr;
+void 
+CShape::createShape(ShapeType type) {
+  m_shapeType = type;
+  switch (type) {
+  case ShapeType::CIRCLE: {
+    auto circleSP = EngineUtilities::MakeShared<sf::CircleShape>(10.f);
+    circleSP->setFillColor(sf::Color::White);
+    m_shapePtr = circleSP.dynamic_pointer_cast<sf::Shape>();
+    break;
+  }
+  case ShapeType::RECTANGLE: {
+    auto rectSP = EngineUtilities::MakeShared<sf::RectangleShape>(sf::Vector2f(100.f, 50.f));
+    rectSP->setFillColor(sf::Color::White);
+    m_shapePtr = rectSP.dynamic_pointer_cast<sf::Shape>();
+    break;
+  }
+  case ShapeType::TRIANGLE: {
+    auto triSP = EngineUtilities::MakeShared<sf::ConvexShape>(3);
+    triSP->setPoint(0, { 0,0 });
+    triSP->setPoint(1, { 50,100 });
+    triSP->setPoint(2, { 100,0 });
+    triSP->setFillColor(sf::Color::White);
+    m_shapePtr = triSP.dynamic_pointer_cast<sf::Shape>();
+    break;
+  }
+  case ShapeType::POLYGON: {
+    auto polySP = EngineUtilities::MakeShared<sf::ConvexShape>(5);
+    polySP->setPoint(0, { 0,0 });
+    polySP->setPoint(1, { 50,100 });
+    polySP->setPoint(2, { 100,0 });
+    polySP->setPoint(3, { 75,-50 });
+    polySP->setPoint(4, { -25,-50 });
+    polySP->setFillColor(sf::Color::White);
+    m_shapePtr = polySP.dynamic_pointer_cast<sf::Shape>();
+    break;
+  }
+  default:
+    m_shapePtr.reset();
+    ERROR("CShape", "createShape", "Tipo desconocido");
+    return;
+  }
+}
+void 
+CShape::start() {
 }
 
-void
-Cshape::setPosition(float x, float y)
-{
-	if (m_shape)
-	{
-		m_shape->setPosition(x, y);
-	}
-	else
-	{
-		ERROR("Cshape", "setPosition", "Shape is null");
-	}
+void 
+CShape::update(float deltaTime) {
 }
 
-void
-Cshape::setPosition(const sf::Vector2f& position)
-{
-	if (m_shape)
-	{
-		m_shape->setPosition(position);
-	}
-	else
-	{
-		ERROR("Cshape", "setPosition", "Shape is null");
-	}
+void 
+CShape::render(const EngineUtilities::TSharedPointer<Window>& window) {
+  if (m_shapePtr) {
+    window->draw(*m_shapePtr);
+  }
 }
 
-void
-Cshape::setFillColor(const sf::Color& color)
-{
-	if (m_shape)
-	{
-		m_shape->setFillColor(color);
-	}
-	else
-	{
-		ERROR("Cshape", "setFillColor", "Shape is null");
-	}
+void CShape::destroy() {
+    m_shapePtr.reset(); 
 }
 
-void
-Cshape::setRotation(float angle)
-{
-	if (m_shape)
-	{
-		m_shape->setRotation(angle);
-	}
-	else
-	{
-		ERROR("Cshape", "setRotation", "Shape is null");
-	}
+void CShape::setPosition(float x, float y) {
+  if (m_shapePtr) m_shapePtr->setPosition(x, y);
+  else ERROR("CShape", "setPosition", "Shape no inicializado");
 }
 
-void
-Cshape::setScale(const sf::Vector2f& scl)
-{
-	if (m_shape)
-	{
-		m_shape->setScale(scl);
-	}
-	else
-	{
-		ERROR("Cshape", "setScale", "Shape is null");
-	}
+void CShape::setFillColor(const sf::Color& color) {
+  if (m_shapePtr) m_shapePtr->setFillColor(color);
+  else ERROR("CShape", "setFillColor", "Shape no inicializado");
+}
+
+void CShape::setRotation(float angle) {
+  if (m_shapePtr) m_shapePtr->setRotation(angle);
+  else ERROR("CShape", "setRotation", "Shape no inicializado");
+}
+
+void CShape::setScale(const sf::Vector2f& scale) {
+  if (m_shapePtr) m_shapePtr->setScale(scale);
+  else ERROR("CShape", "setScale", "Shape no inicializado");
 }

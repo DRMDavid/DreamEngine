@@ -1,51 +1,31 @@
 #pragma once
 #include "Prerequisites.h"
 #include "Window.h"
-
-/**
- * @class BaseApp
- * @brief Clase principal encargada del ciclo de vida de la aplicación.
- */
-class
-  BaseApp {
+#include "CShape.h"
+class 
+BaseApp {
 public:
-  BaseApp() = default;
+	BaseApp() = default;
+	~BaseApp();
 
-  ~BaseApp();
+	int
+	run();
 
-  /**
-   * @brief Ejecuta el ciclo principal de la aplicación.
-   * @return Código de salida del programa (0 si fue exitoso).
-   */
-  int
-    run();
+	bool
+	init();
 
-  /**
-   * @brief Inicializa los recursos de la aplicación.
-   * @return true si la inicialización fue exitosa.
-   */
-  bool
-    init();
+	void
+	update();
 
-  /**
-   * @brief Actualiza la lógica de la aplicación por frame.
-   */
-  void
-    update();
+	void
+	render();
 
-  /**
-   * @brief Renderiza los elementos visuales.
-   */
-  void
-    render();
+	void
+	destroy();
 
-  /**
-   * @brief Libera los recursos utilizados por la aplicación.
-   */
-  void
-    destroy();
 
 private:
-  Window* m_window;           ///< Puntero a la ventana principal.
-  sf::CircleShape* m_circle;  ///< Figura a renderizar.
+	EngineUtilities::TSharedPointer<Window> m_windowPtr;
+
+	EngineUtilities::TSharedPointer<CShape>   m_shapePtr;
 };

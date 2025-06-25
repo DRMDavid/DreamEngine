@@ -1,93 +1,53 @@
 #pragma once
 #include "Prerequisites.h"
-
+#include "ECS\Component.h"
 class Window;
 
-/**
- * @class Cshape
- * @brief Encapsula una figura geométrica de SFML y su manipulación.
- */
-class
-  Cshape {
+class 
+CShape : public Component {
 public:
-  Cshape() = default;
+	CShape() = default;
 
-  /**
-   * @brief Constructor que inicializa con tipo de figura.
-   * @param shapeType Tipo de figura.
-   */
-  Cshape(ShapeType shapeType);
+	CShape(ShapeType shapeType) :	
+    m_shapePtr(nullptr), 
+	m_shapeType(ShapeType::EMPTY), 
+    Component(ComponentType::SHAPE) { }
 
-  ~Cshape();
+	virtual
+	~CShape() = default;
 
-  /**
-   * @brief Crea una figura del tipo especificado.
-   * @param shapeType Tipo de figura.
-   * @return Puntero a la figura creada.
-   */
-  sf::Shape*
+    void
     createShape(ShapeType shapeType);
 
-  /**
-   * @brief Actualiza la figura por frame.
-   * @param deltaTime Tiempo entre frames.
-   */
-  void
-    update(float deltaTime);
+    void 
+    start() override;
 
-  /**
-   * @brief Renderiza la figura en pantalla.
-   */
-  void
-    render();
+    void
+    update(float deltaTime)override;
 
-  /**
-   * @brief Establece posición usando coordenadas individuales.
-   * @param x Coordenada X.
-   * @param y Coordenada Y.
-   */
-  void
+    void
+    render(const EngineUtilities::TSharedPointer<Window>& window)override;
+
+    void 
+    destroy() override;
+
+    void 
     setPosition(float x, float y);
 
-  /**
-   * @brief Establece la posición usando vector.
-   * @param position Vector de posición.
-   */
-  void
+    void 
     setPosition(const sf::Vector2f& position);
 
-  /**
-   * @brief Establece el color de relleno.
-   * @param color Color a aplicar.
-   */
-  void
+    void 
     setFillColor(const sf::Color& color);
 
-  /**
-   * @brief Establece el ángulo de rotación.
-   * @param angle Ángulo en grados.
-   */
-  void
+    void 
     setRotation(float angle);
-
-  /**
-   * @brief Establece la escala de la figura.
-   * @param scl Escala 2D.
-   */
-  void
+  
+    void 
     setScale(const sf::Vector2f& scl);
 
-  /**
-   * @brief Devuelve la figura interna.
-   * @return Puntero a sf::Shape.
-   */
-  sf::Shape*
-    getShape() {
-    return m_shape;
-  }
-
 private:
-  sf::Shape* m_shape;         ///< Puntero a la figura de SFML.
-  ShapeType m_shapeType;      ///< Tipo de figura creada.
-  sf::VertexArray m_line;     ///< Línea de referencia (si aplica).
+	EngineUtilities::TSharedPointer<sf::Shape> m_shapePtr;
+	ShapeType m_shapeType;
+	sf::VertexArray* m_line;
 };
