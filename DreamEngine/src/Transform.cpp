@@ -16,18 +16,3 @@ Transform::render(const EngineUtilities::TSharedPointer<Window>& window) {
 void
 Transform::destroy() {
 }
-
-void
-Transform::setPosition(const sf::Vector2f& position) {
-	
-}
-
-void
-Transform::setRotation(const sf::Vector2f& rotation) {
-	
-}
-
-void
-Transform::setScale(const sf::Vector2f& scale) {
-	
-}

@@ -22,6 +22,9 @@
     <Filter Include="Archivos de recursos\ECS">
       <UniqueIdentifier>{c13c087d-ffc5-4d31-9752-ff911e0c7137}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\Utiilities">
+      <UniqueIdentifier>{6cf39ccd-cb91-4d8a-be4c-4ace013387f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\Actor.cpp">
@@ -37,6 +40,9 @@
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
     <ClCompile Include="src\Window.cpp">
+      <Filter>Archivos de recursos</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
   </ItemGroup>
@@ -73,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="include\ECS\Actor.h">
       <Filter>Archivos de encabezado\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Transform.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CVector2f.h">
+      <Filter>Archivos de encabezado\Utiilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

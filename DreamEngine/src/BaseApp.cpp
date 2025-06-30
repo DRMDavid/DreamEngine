@@ -23,8 +23,8 @@ BaseApp::run() {
 
 bool
 BaseApp::init() {
-	m_windowPtr = EngineUtilities 
-	::MakeShared<Window>(1920, 1080, "DreamEngine");
+	m_windowPtr = EngineUtilities
+		::MakeShared<Window>(1920, 1080, "DreamEngine");
 	if (!m_windowPtr) {
 		ERROR("BaseApp",
 			"init",
@@ -32,11 +32,10 @@ BaseApp::init() {
 		return false;
 	}
 
-	// Create a circle shape
 	m_shapePtr = EngineUtilities::MakeShared<CShape>();
 	if (m_shapePtr)
 	{
-		m_shapePtr->createShape(ShapeType::TRIANGLE);
+		m_shapePtr->createShape(ShapeType::CIRCLE);
 		m_shapePtr->setFillColor(sf::Color::Magenta);
 		m_shapePtr->setPosition(200.f, 150.f);
 	}
