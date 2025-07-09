@@ -2,30 +2,33 @@
 #include "Prerequisites.h"
 #include "Window.h"
 #include "CShape.h"
-class 
-BaseApp {
+#include "ECS/Actor.h"
+class
+	BaseApp {
 public:
 	BaseApp() = default;
 	~BaseApp();
 
 	int
-	run();
+		run();
 
 	bool
-	init();
+		init();
 
 	void
-	update();
+		update();
 
 	void
-	render();
+		render();
 
 	void
-	destroy();
+		destroy();
 
 
 private:
 	EngineUtilities::TSharedPointer<Window> m_windowPtr;
 
 	EngineUtilities::TSharedPointer<CShape>   m_shapePtr;
+
+	EngineUtilities::TSharedPointer<Actor> m_ACircle;
 };

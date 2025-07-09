@@ -38,8 +38,8 @@
 }
 
 // ENUMS
-enum 
-ShapeType {
+enum
+  ShapeType {
   EMPTY = 0,
   CIRCLE = 1,
   RECTANGLE = 2,

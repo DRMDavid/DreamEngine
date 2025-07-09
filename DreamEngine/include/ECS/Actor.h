@@ -2,32 +2,33 @@
 #include "../Prerequisites.h"
 #include "Entity.h"
 #include "Cshape.h"
+#include "../Transform.h"
 
-class 
-Actor : Entity {
+class
+	Actor : Entity {
 public:
 	Actor() = default;
 
-	Actor(const std::string & actorName);
+	Actor(const std::string& actorName);
 
 	virtual
-	~Actor() = default;
+		~Actor() = default;
 
 	void
-	start() override;
+		start() override;
 
 	void
-	update(float deltaTime) override;
+		update(float deltaTime) override;
 
 	void
-	render(const EngineUtilities::TSharedPointer<Window>& window) override;
+		render(const EngineUtilities::TSharedPointer<Window>& window) override;
 
 	void
-	destroy() override;
+		destroy() override;
 
-  template <typename T>
-  EngineUtilities::TSharedPointer<T> 
-  getComponent();
+	template <typename T>
+	EngineUtilities::TSharedPointer<T>
+		getComponent();
 
 private:
 	std::string m_name = "Actor";
@@ -36,12 +37,12 @@ private:
 template<typename T>
 inline EngineUtilities::TSharedPointer<T>
 Actor::getComponent() {
-  for (auto& component : components) {
-    EngineUtilities::TSharedPointer<T> specificComponent 
-	= component.template dynamic_pointer_cast<T>();
-    if (specificComponent) {
-      return specificComponent;
-    }
-  }
-  return EngineUtilities::TSharedPointer<T>();
+	for (auto& component : components) {
+		EngineUtilities::TSharedPointer<T> specificComponent
+			= component.template dynamic_pointer_cast<T>();
+		if (specificComponent) {
+			return specificComponent;
+		}
+	}
+	return EngineUtilities::TSharedPointer<T>();
 }

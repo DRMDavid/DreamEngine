@@ -1,7 +1,7 @@
 #pragma once
 #include "../Prerequisites.h"
-class 
-Window;
+class
+	Window;
 
 
 enum
@@ -16,8 +16,8 @@ enum
 	TEXTURE = 7
 };
 
-class 
-Component {
+class
+	Component {
 public:
 
 	Component() = default;
@@ -25,22 +25,22 @@ public:
 	Component(const ComponentType type) : m_type(type) {}
 
 	virtual
-	~Component() = default;
+		~Component() = default;
 
 	virtual void
-	start() = 0;
+		start() = 0;
 
 	virtual void
-	update(float deltaTime) = 0;
+		update(float deltaTime) = 0;
 
 	virtual void
-	render(const EngineUtilities::TSharedPointer<Window>& window) = 0;
+		render(const EngineUtilities::TSharedPointer<Window>& window) = 0;
 
 	virtual void
-	destroy() = 0;
+		destroy() = 0;
 
-  ComponentType 
-  getType() const { return m_type; }
+	ComponentType
+		getType() const { return m_type; }
 
 protected:
 	ComponentType m_type;

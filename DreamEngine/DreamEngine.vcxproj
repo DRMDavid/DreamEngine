@@ -38,7 +38,9 @@
     <ClInclude Include="include\Memory\TWeakPointer.h" />
     <ClInclude Include="include\prerequisites.h" />
     <ClInclude Include="include\Transform.h" />
-    <ClInclude Include="include\CVector2f.h" />
+    <ClInclude Include="include\Utiilities\CVector2.h" />
+    <ClInclude Include="include\Utiilities\CVector3.h" />
+    <ClInclude Include="include\Utiilities\CVector4.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

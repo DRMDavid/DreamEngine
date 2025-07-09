@@ -3,7 +3,7 @@
 Window::Window(int width, int height, const std::string& title) {
 
 	m_windowPtr = EngineUtilities
-	::MakeUnique<sf::RenderWindow>(sf::VideoMode(width, height), title);
+		::MakeUnique<sf::RenderWindow>(sf::VideoMode(width, height), title);
 
 	if (!m_windowPtr.isNull()) {
 		m_windowPtr->setFramerateLimit(60);
@@ -69,7 +69,7 @@ Window::display() {
 	}
 }
 
-void 
+void
 Window::destroy() {
 	m_windowPtr.release();
 }

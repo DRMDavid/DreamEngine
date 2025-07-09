@@ -1,7 +1,7 @@
 #include "CShape.h"
 #include "Window.h"
 
-void 
+void
 CShape::createShape(ShapeType type) {
   m_shapeType = type;
   switch (type) {
@@ -43,15 +43,15 @@ CShape::createShape(ShapeType type) {
     return;
   }
 }
-void 
+void
 CShape::start() {
 }
 
-void 
+void
 CShape::update(float deltaTime) {
 }
 
-void 
+void
 CShape::render(const EngineUtilities::TSharedPointer<Window>& window) {
   if (m_shapePtr) {
     window->draw(*m_shapePtr);
@@ -59,13 +59,19 @@ CShape::render(const EngineUtilities::TSharedPointer<Window>& window) {
 }
 
 void CShape::destroy() {
-    m_shapePtr.reset(); 
+  m_shapePtr.reset();
 }
 
 void CShape::setPosition(float x, float y) {
   if (m_shapePtr) m_shapePtr->setPosition(x, y);
   else ERROR("CShape", "setPosition", "Shape no inicializado");
 }
+
+void CShape::setPosition(const sf::Vector2f& pos) {
+  if (m_shapePtr) m_shapePtr->setPosition(pos);
+  else ERROR("CShape", "setPosition", "Shape no inicializado");
+}
+
 
 void CShape::setFillColor(const sf::Color& color) {
   if (m_shapePtr) m_shapePtr->setFillColor(color);

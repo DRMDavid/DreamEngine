@@ -36,14 +36,27 @@ BaseApp::init() {
 	if (m_shapePtr)
 	{
 		m_shapePtr->createShape(ShapeType::CIRCLE);
-		m_shapePtr->setFillColor(sf::Color::Magenta);
+		m_shapePtr->setFillColor(sf::Color::Green);
 		m_shapePtr->setPosition(200.f, 150.f);
+	}
+
+	//circle actor
+	m_ACircle = EngineUtilities::MakeShared<Actor>("Circle Actor");
+	if (m_ACircle) {
+		m_ACircle->getComponent<CShape>()->createShape(CIRCLE);
+		m_ACircle->getComponent<CShape>()->setFillColor(sf::Color::Red);
+		m_ACircle->getComponent<Transform>()->setPosition(sf::Vector2(100.f, 150.f));
 	}
 	return true;
 }
 
 void
 BaseApp::update() {
+
+	if (!m_ACircle.isNull()) {
+		m_ACircle->update(0);
+	}
+
 }
 
 void
@@ -55,7 +68,12 @@ BaseApp::render() {
 	if (m_shapePtr) {
 		m_shapePtr->render(m_windowPtr);
 	}
+	if (m_ACircle) {
+		m_ACircle->render(m_windowPtr);
+	}
 	m_windowPtr->display();
+
+
 }
 
 void

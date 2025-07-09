@@ -2,42 +2,42 @@
 #include "../Prerequisites.h"
 #include "Component.h"
 
-class 
-Window;
+class
+	Window;
 
-class 
-Entity {
+class
+	Entity {
 public:
 
 	virtual
-	~Entity() = default;
+		~Entity() = default;
 
 	virtual void
-	start() = 0;
+		start() = 0;
 
 	virtual void
-	update(float deltaTime) = 0;
+		update(float deltaTime) = 0;
 
 	virtual void
-	render(const EngineUtilities::TSharedPointer<Window>& window) = 0;
+		render(const EngineUtilities::TSharedPointer<Window>& window) = 0;
 
 	virtual void
-	destroy() = 0;
+		destroy() = 0;
 
-	template<typename T> void 
-	addComponent(EngineUtilities::TSharedPointer<T> component) {
+	template<typename T> void
+		addComponent(EngineUtilities::TSharedPointer<T> component) {
 		static_assert(std::is_base_of<Component, T>
-		::value, "T must be derived from Component");
+			::value, "T must be derived from Component");
 		components.push_back
 		(component.template dynamic_pointer_cast<Component>());
 	}
 
 	template<typename T>
 	EngineUtilities::TSharedPointer<T>
-	getComponent() {
+		getComponent() {
 		for (auto& component : components) {
-			EngineUtilities::TSharedPointer<T> specificComponent 
-			= component.template dynamic_pointer_cast<T>();
+			EngineUtilities::TSharedPointer<T> specificComponent
+				= component.template dynamic_pointer_cast<T>();
 			if (specificComponent) {
 				return specificComponent;
 			}

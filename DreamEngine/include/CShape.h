@@ -3,51 +3,52 @@
 #include "ECS\Component.h"
 class Window;
 
-class 
-CShape : public Component {
+class
+  CShape : public Component {
 public:
-	CShape() = default;
+  CShape() = default;
 
-	CShape(ShapeType shapeType) :	
-    m_shapePtr(nullptr), 
-	m_shapeType(ShapeType::EMPTY), 
-    Component(ComponentType::SHAPE) { }
+  CShape(ShapeType shapeType) :
+    m_shapePtr(nullptr),
+    m_shapeType(ShapeType::EMPTY),
+    Component(ComponentType::SHAPE) {
+  }
 
-	virtual
-	~CShape() = default;
+  virtual
+    ~CShape() = default;
 
-    void
+  void
     createShape(ShapeType shapeType);
 
-    void 
+  void
     start() override;
 
-    void
+  void
     update(float deltaTime)override;
 
-    void
+  void
     render(const EngineUtilities::TSharedPointer<Window>& window)override;
 
-    void 
+  void
     destroy() override;
 
-    void 
+  void
     setPosition(float x, float y);
 
-    void 
+  void
     setPosition(const sf::Vector2f& position);
 
-    void 
+  void
     setFillColor(const sf::Color& color);
 
-    void 
+  void
     setRotation(float angle);
-  
-    void 
+
+  void
     setScale(const sf::Vector2f& scl);
 
 private:
-	EngineUtilities::TSharedPointer<sf::Shape> m_shapePtr;
-	ShapeType m_shapeType;
-	sf::VertexArray* m_line;
+  EngineUtilities::TSharedPointer<sf::Shape> m_shapePtr;
+  ShapeType m_shapeType;
+  sf::VertexArray* m_line;
 };
