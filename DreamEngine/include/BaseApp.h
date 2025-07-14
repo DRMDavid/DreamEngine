@@ -3,32 +3,53 @@
 #include "Window.h"
 #include "CShape.h"
 #include "ECS/Actor.h"
-class
-	BaseApp {
+
+/**
+ * @class BaseApp
+ * @brief Clase principal que gestiona el ciclo de vida de la aplicacion.
+ *
+ * Contiene punteros inteligentes a Window, CShape y Actor,
+ * y controla la inicializacion, actualizacion, renderizado y destruccion.
+ */
+class BaseApp {
 public:
-	BaseApp() = default;
-	~BaseApp();
+  /// Constructor por defecto
+  BaseApp() = default;
 
-	int
-		run();
+  /// Destructor
+  ~BaseApp();
 
-	bool
-		init();
+  /**
+   * @brief Metodo principal que ejecuta el ciclo de la aplicacion.
+   * @return int Codigo de salida.
+   */
+  int run();
 
-	void
-		update();
+  /**
+   * @brief Inicializa los componentes necesarios para la aplicacion.
+   * @return true si la inicializacion fue exitosa.
+   */
+  bool init();
 
-	void
-		render();
+  /**
+   * @brief Actualiza la logica del programa en cada ciclo.
+   */
+  void update();
 
-	void
-		destroy();
+  /**
+   * @brief Renderiza los elementos en pantalla.
+   */
+  void render();
 
+  /**
+   * @brief Libera los recursos y limpia antes de cerrar.
+   */
+  void destroy();
 
 private:
-	EngineUtilities::TSharedPointer<Window> m_windowPtr;
+  EngineUtilities::TSharedPointer<Window> m_windowPtr; ///< Puntero inteligente a ventana
 
-	EngineUtilities::TSharedPointer<CShape>   m_shapePtr;
+  EngineUtilities::TSharedPointer<CShape> m_shapePtr; ///< Puntero inteligente a figura
 
-	EngineUtilities::TSharedPointer<Actor> m_ACircle;
+  EngineUtilities::TSharedPointer<Actor> m_ACircle; ///< Puntero inteligente a actor circulo
 };
