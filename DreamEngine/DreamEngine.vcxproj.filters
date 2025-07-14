@@ -83,12 +83,6 @@
     <ClInclude Include="include\Transform.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utiilities\CVector3.h">
-      <Filter>Archivos de encabezado\Utiilities</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Utiilities\CVector4.h">
-      <Filter>Archivos de encabezado\Utiilities</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utiilities\CVector2.h">
       <Filter>Archivos de encabezado\Utiilities</Filter>
     </ClInclude>
