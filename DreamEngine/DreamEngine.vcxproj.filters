@@ -42,9 +42,6 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
-    <ClCompile Include="src\Transform.cpp">
-      <Filter>Archivos de recursos</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\prerequisites.h">
@@ -80,11 +77,11 @@
     <ClInclude Include="include\ECS\Actor.h">
       <Filter>Archivos de encabezado\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="include\Transform.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="include\Utiilities\CVector2.h">
       <Filter>Archivos de encabezado\Utiilities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Transform.h">
+      <Filter>Archivos de encabezado\ECS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

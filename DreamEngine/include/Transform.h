@@ -1,106 +1,144 @@
 #pragma once
 
-#include "ECS/Component.h"
-#include <SFML/System/Vector2.hpp>
+#include "Prerequisites.h"
+#include "Window.h"
+#include "component.h"
 
-class Window;
+class
+	Window;
 
 /**
  * @class Transform
- * @brief Componente que almacena transformaciones basicas de una entidad.
+ * @brief Component managing position, rotation, and scale of an entity.
  *
- * Gestiona posicion, rotacion y escala usando vectores 2D de SFML.
- * Hereda de Component.
+ * This component handles the spatial transformation of an entity,
+ * including position, rotation, and scale in 2D space.
  */
-class Transform : public Component {
+class
+	Transform : public Component {
 
 public:
-  /**
-   * @brief Constructor por defecto que inicializa la transformacion a valores neutros.
-   * Posicion (0,0), rotacion (0,0) y escala (1,1).
-   */
-  Transform() :
-    m_position(0.f, 0.f),
-    m_rotation(0.f, 0.f),
-    m_scale(1.f, 1.f),
-    Component(ComponentType::TRANSFORM) {
-  }
+	/**
+	 * @brief Default constructor initializes position (0,0),
+	 * rotation (0,0), and scale (1,1).
+	 */
+	Transform() :
+		m_position(0.f, 0.f),
+		m_rotation(0.f, 0.f),
+		m_scale(1.f, 1.f),
+		Component(ComponentType::TRANSFORM) {
+	}
 
-  /// Destructor virtual por defecto
-  virtual ~Transform() = default;
+	/**
+	 * @brief Virtual destructor.
+	 */
+	virtual
+		~Transform() = default;
 
-  /// Metodo llamado al iniciar el componente (override)
-  void start() override;
+	/**
+	 * @brief Called once when the component starts.
+	 *
+	 * Typically used to perform initialization logic.
+	 */
+	void
+		start() override {};
 
-  /**
-   * @brief Actualiza la logica del componente (override).
-   * @param deltaTime Tiempo delta desde la ultima actualizacion.
-   */
-  void update(float deltaTime) override;
+	/**
+	 * @brief Called every frame to update the component.
+	 * @param deltaTime Time elapsed since last frame in seconds.
+	 */
+	void
+		update(float deltaTime) override {};
 
-  /**
-   * @brief Renderiza la transformacion (override).
-   * @param window Puntero inteligente a la ventana donde renderizar.
-   */
-  void render(const EngineUtilities::TSharedPointer<Window>& window) override;
+	/**
+	 * @brief Called to render the component.
+	 * @param window Shared pointer to the rendering window.
+	 */
+	void
+		render(const EngineUtilities::TSharedPointer<Window>& window) override {};
 
-  /// Metodo para liberar recursos (override)
-  void destroy() override;
+	/**
+	 * @brief Called when the component is destroyed for cleanup.
+	 */
+	void
+		destroy() {}
 
-  // Setters
+	void
+		seek(const sf::Vector2f& targetPosition,
+			float speed,
+			float deltaTime,
+			float range) {
+		sf::Vector2f direction = targetPosition - m_position;
+		float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-  /**
-   * @brief Establece la posicion del objeto.
-   * @param _position Vector 2D con la nueva posicion.
-   */
-  void setPosition(const sf::Vector2f& _position) {
-    m_position = _position;
-  }
+		if (length > range) {
+			direction /= length;  // Normaliza el vector
+			m_position += direction * speed * deltaTime;
+		}
+	}
 
-  /**
-   * @brief Establece la rotacion del objeto.
-   * @param _rotation Vector 2D con la nueva rotacion.
-   */
-  void setRotation(const sf::Vector2f& _rotation) {
-    m_rotation = _rotation;
-  }
 
-  /**
-   * @brief Establece la escala del objeto.
-   * @param _scale Vector 2D con la nueva escala.
-   */
-  void setScale(const sf::Vector2f& _scale) {
-    m_scale = _scale;
-  }
+	/**
+	 * @brief Sets the position.
+	 * @param _position New position vector.
+	 */
+	void
+		setPosition(const sf::Vector2f& _position) {
+		m_position = _position;
+	}
 
-  // Getters
+	/**
+	 * @brief Sets the rotation.
+	 * @param _rotation New rotation vector.
+	 */
+	void
+		setRotation(const sf::Vector2f& _rotation) {
+		m_rotation = _rotation;
+	}
 
-  /**
-   * @brief Obtiene la posicion actual.
-   * @return Referencia al vector posicion.
-   */
-  sf::Vector2f& getPosition() {
-    return m_position;
-  }
+	/**
+	 * @brief Sets the scale.
+	 * @param _scale New scale vector.
+	 */
+	void
+		setScale(const sf::Vector2f& _scale) {
+		m_scale = _scale;
+	}
 
-  /**
-   * @brief Obtiene la rotacion actual.
-   * @return Referencia al vector rotacion.
-   */
-  sf::Vector2f& getRotation() {
-    return m_rotation;
-  }
+	/**
+	 * @brief Gets the current position.
+	 * @return Reference to position vector.
+	 */
+	sf::Vector2f&
+		getPosition() {
+		return m_position;
+	}
 
-  /**
-   * @brief Obtiene la escala actual.
-   * @return Referencia al vector escala.
-   */
-  sf::Vector2f& getScale() {
-    return m_scale;
-  }
+	/**
+	 * @brief Gets the current rotation.
+	 * @return Reference to rotation vector.
+	 */
+	sf::Vector2f&
+		getRotation() {
+		return m_rotation;
+	}
+
+	/**
+	 * @brief Gets the current scale.
+	 * @return Reference to scale vector.
+	 */
+	sf::Vector2f&
+		getScale() {
+		return m_scale;
+	}
 
 private:
-  sf::Vector2f m_position; ///< Posicion 2D
-  sf::Vector2f m_rotation; ///< Rotacion 2D
-  sf::Vector2f m_scale;    ///< Escala 2D
+	sf::Vector2f
+		m_position; //< Position vector representing the entity's position in 2D space.
+
+	sf::Vector2f
+		m_rotation; //< Rotation vector representing the entity's rotation in degrees.
+
+	sf::Vector2f
+		m_scale; //< Scale vector representing the entity's scale factors.
 };
