@@ -13,7 +13,7 @@
  * for any in-game object or entity, including component management.
  */
 class
-	Actor : Entity {
+	Actor :  Entity {
 
 public:
 	/**
