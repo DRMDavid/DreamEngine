@@ -1,8 +1,9 @@
 #include "ECS/Actor.h"
+#include "ECS/Texture.h"
 
 /**
  * @brief Constructor que inicializa un Actor con un nombre.
- *        Agrega automaticamente los componentes CShape y Transform.
+ *        Agrega automáticamente los componentes CShape y Transform.
  * @param actorName Nombre del actor.
  */
 Actor::Actor(const std::string& actorName) {
@@ -19,7 +20,7 @@ Actor::Actor(const std::string& actorName) {
 }
 
 /**
- * @brief Metodo para renderizar todos los componentes del Actor.
+ * @brief Método para renderizar todos los componentes del Actor.
  * @param window Puntero compartido a la ventana donde se dibuja.
  */
 void Actor::render(const EngineUtilities::TSharedPointer<Window>& window) {
@@ -32,8 +33,23 @@ void Actor::render(const EngineUtilities::TSharedPointer<Window>& window) {
 }
 
 /**
- * @brief Metodo llamado al iniciar el Actor.
- *        Actualmente vacio, puede usarse para inicializaciones.
+ * @brief Asigna una textura al Actor (la añade como componente y la pasa al CShape).
+ * @param texture Puntero compartido a la textura.
+ */
+void
+Actor::setTexture(const EngineUtilities::TSharedPointer<Texture>& texture) {
+  auto shape = getComponent<CShape>();
+  if (shape) {
+    if (!texture.isNull()) {
+      shape->setTexture(texture);
+      addComponent(texture);
+    }
+  }
+}
+
+/**
+ * @brief Método llamado al iniciar el Actor.
+ *        Actualmente vacío, puede usarse para inicializaciones.
  */
 void Actor::start() {
   // Implementar inicializaciones si es necesario
@@ -41,8 +57,8 @@ void Actor::start() {
 
 /**
  * @brief Actualiza el Actor en cada frame.
- *        Actualiza posicion, rotacion y escala del shape segun el transform.
- * @param deltaTime Tiempo transcurrido desde el ultimo frame (en segundos).
+ *        Ajusta posición, rotación y escala del shape según el transform.
+ * @param deltaTime Tiempo transcurrido desde el último frame (en segundos).
  */
 void Actor::update(float deltaTime) {
   auto transform = getComponent<Transform>();
@@ -56,8 +72,8 @@ void Actor::update(float deltaTime) {
 }
 
 /**
- * @brief Metodo para liberar recursos del Actor.
- *        Actualmente vacio, puede usarse para limpieza.
+ * @brief Método para liberar recursos del Actor.
+ *        Actualmente vacío, puede usarse para limpieza.
  */
 void Actor::destroy() {
   // Implementar limpieza si es necesario

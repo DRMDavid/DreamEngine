@@ -5,6 +5,7 @@
 #include "CShape.h"
 #include "ECS/Actor.h"
 #include <vector> 
+#include <SFML/Graphics.hpp>
 
 /**
  * @class BaseApp
@@ -94,7 +95,15 @@ private:
 	 */
 	EngineUtilities::TSharedPointer<Actor> m_ACircle;
 
+
+
+
+
 	std::vector<sf::Vector2f> m_waypoints;     ///< Lista de puntos a seguir
 	size_t m_currentWaypointIndex = 0;
+
+	std::vector<sf::VertexArray> m_waypointLines;
+
+
 
 };

@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include "Cshape.h"
 #include "Transform.h"
-
+#include "Texture.h"
 /**
  * @class Actor
  * @brief Represents an actor in the game or engine, derived from Entity.
@@ -72,6 +72,8 @@ public:
 	void
 		destroy() override;
 
+	void
+		setTexture(const EngineUtilities::TSharedPointer<Texture>& texture);
 	/**
 	 * @brief Retrieves the first component of type T attached to the actor.
 	 *

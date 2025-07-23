@@ -1,8 +1,10 @@
 #pragma once
 #include "Prerequisites.h"
 #include "ECS\Component.h"
+#include "ECS\Texture.h"
 
 class Window;
+
 
 /**
  * @class CShape
@@ -84,8 +86,12 @@ public:
    */
   void setScale(const sf::Vector2f& scl);
 
+  void
+    setTexture(const EngineUtilities::TSharedPointer<Texture>& texture);
+
 private:
-  EngineUtilities::TSharedPointer<sf::Shape> m_shapePtr; ///< Puntero inteligente a la forma SFML
-  ShapeType m_shapeType; ///< Tipo de forma
-  sf::VertexArray* m_line; ///< Puntero a vertices para lineas (si aplica)
+  EngineUtilities::TSharedPointer<sf::Shape> m_shapePtr;
+  //sf::Shape* m_shape;
+  ShapeType m_shapeType;
+  sf::VertexArray* m_line;
 };
