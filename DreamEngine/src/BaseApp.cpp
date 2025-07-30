@@ -1,16 +1,15 @@
-#include "BaseApp.h"
-#include <ECS/Actor.h>
-#include "SourceManager.h"  // Asegúrate de que este es el nombre correcto
-
+ï»¿#include "BaseApp.h"
+#include "ResourceManager.h"
+#include <cmath>  // Para std::sqrt y std::pow
+#include <imgui.h>          // ImGui core
+#include <imgui-SFML.h>     // ImGui + SFML bridge
 
 BaseApp::~BaseApp() {
 }
 
 int BaseApp::run() {
   if (!init()) {
-    ERROR("BaseApp",
-      "run",
-      "Initialization failed, check method validations");
+    ERROR("BaseApp", "run", "Initializes result on a false statement, check method validations");
     return -1;
   }
 
@@ -25,82 +24,88 @@ int BaseApp::run() {
 }
 
 bool BaseApp::init() {
-  // Crear ventana
+  ResourceManager& resourceMan = ResourceManager::getInstance();
+
   m_windowPtr = EngineUtilities::MakeShared<Window>(1920, 1080, "DreamEngine");
   if (!m_windowPtr) {
-    ERROR("BaseApp", "init", "Failed to create window pointer");
+    ERROR("BaseApp", "init", "Failed to create window pointer, check memory allocation");
     return false;
   }
 
-  // Crear Actor círculo
+  // Crear Actor cÃ­rculo
   m_ACircle = EngineUtilities::MakeShared<Actor>("Circle Actor");
-  if (!m_ACircle) {
-    ERROR("BaseApp", "init", "Failed to create Circle Actor");
-    return false;
-  }
-  m_ACircle->getComponent<CShape>()->createShape(CIRCLE);
-  m_ACircle->getComponent<CShape>()->setFillColor(sf::Color::White);
-  m_ACircle->getComponent<Transform>()->setPosition({ 100.f, 150.f });
+  if (m_ACircle) {
+    m_ACircle->getComponent<CShape>()->createShape(CIRCLE);
+    m_ACircle->getComponent<CShape>()->setFillColor(sf::Color::White);
+    m_ACircle->getComponent<Transform>()->setPosition(sf::Vector2f(899.f, 855.f));
+    m_ACircle->getComponent<Transform>()->setScale(sf::Vector2f(2.f, 2.f));
 
-  // Cargar textura para el actor
-  auto& resourceMan = ResourceManager::getInstance();
-  if (!resourceMan.loadTexture("Assets/Yoshi", "png")) {
-    MESSAGE("BaseApp", "init", "Can't load the texture");
-    // Si quieres seguir sin textura, comenta el return y deja que use la por defecto
-    return false;
+    if (!resourceMan.loadTexture("sprites/Yoshi", "png")) {
+      MESSAGE("BaseApp", "Init", "Can't load the texture");
+    }
+    m_ACircle->setTexture(resourceMan.getTexture("sprites/Yoshi"));
   }
-  m_ACircle->setTexture(resourceMan.getTexture("Assets/Yoshi"));
 
-  // Definir waypoints
+  // Waypoints
   m_waypoints = {
-      {600.f, 150.f},
-      {660.f, 330.f},
-      {480.f, 220.f},
-      {720.f, 220.f},
-      {540.f, 330.f},
-      {600.f, 150.f}
+      {1320.f, 855.f},
+      {1320.f, 600.f},
+      {1100.f, 400.f},
+      {750.f, 350.f},
+      {600.f, 470.f},
+      {550.f, 700.f},
+      {750.f, 850.f},
+      {950.f, 950.f},
+      {1320.f, 855.f}
   };
-
-  /*/ Crear líneas entre waypoints para visualizar la estrella
-  for (size_t i = 0; i + 1 < m_waypoints.size(); ++i) {
-    sf::VertexArray line(sf::Lines, 2);
-    line[0].position = m_waypoints[i];
-    line[0].color = sf::Color::Yellow;
-    line[1].position = m_waypoints[i + 1];
-    line[1].color = sf::Color::Yellow;
-    m_waypointLines.push_back(line);
-  }*/
-
   m_currentWaypointIndex = 0;
+
+  // Crear pista
+  m_ATrack = EngineUtilities::MakeShared<Actor>("Track Actor");
+  if (m_ATrack) {
+    m_ATrack->getComponent<CShape>()->createShape(RECTANGLE);
+    m_ATrack->getComponent<CShape>()->setFillColor(sf::Color::White);
+    m_ATrack->getComponent<Transform>()->setPosition(sf::Vector2f(450.f, 0.f));
+    m_ATrack->getComponent<Transform>()->setScale(sf::Vector2f(10.f, 19.5f));
+
+    if (!resourceMan.loadTexture("sprites/pista", "png")) {
+      MESSAGE("BaseApp", "Init", "Can't load the texture");
+    }
+    m_ATrack->setTexture(resourceMan.getTexture("sprites/pista"));
+  }
+
   return true;
 }
 
 void BaseApp::update() {
-  if (m_windowPtr) {
-    m_windowPtr->update();
+  if (!m_windowPtr.isNull()) {
+    m_windowPtr->update();  // Incluye ImGui::SFML::Update()
   }
 
-  if (m_ACircle) {
+  if (!m_ACircle.isNull()) {
     m_ACircle->update(m_windowPtr->deltaTime.asSeconds());
 
     if (m_currentWaypointIndex < m_waypoints.size()) {
       sf::Vector2f targetPos = m_waypoints[m_currentWaypointIndex];
-      auto currentPos = m_ACircle->getComponent<Transform>()->getPosition();
+      auto transform = m_ACircle->getComponent<Transform>();
+      auto currentPos = transform->getPosition();
 
-      float dx = targetPos.x - currentPos.x;
-      float dy = targetPos.y - currentPos.y;
-      float distance = std::sqrt(dx * dx + dy * dy);
+      float distanceToTarget = std::sqrt(
+        std::pow(targetPos.x - currentPos.x, 2) +
+        std::pow(targetPos.y - currentPos.y, 2)
+      );
 
-      if (distance < 10.f) {
-        // Avanzar al siguiente waypoint
-        ++m_currentWaypointIndex;
+      if (distanceToTarget < 10.0f) {
+        m_currentWaypointIndex++;
       }
       else {
-        // Buscar el siguiente waypoint
-        m_ACircle->getComponent<Transform>()
-          ->seek(targetPos, 100.f, m_windowPtr->deltaTime.asSeconds(), 10.f);
+        transform->seek(targetPos, 100.f, m_windowPtr->deltaTime.asSeconds(), 10.f);
       }
     }
+  }
+
+  if (!m_ATrack.isNull()) {
+    m_ATrack->update(m_windowPtr->deltaTime.asSeconds());
   }
 }
 
@@ -109,19 +114,40 @@ void BaseApp::render() {
 
   m_windowPtr->clear();
 
-  // Renderiza líneas de waypoints
-  for (auto& line : m_waypointLines) {
-    m_windowPtr->draw(line);
+  if (m_shapePtr) {
+    m_shapePtr->render(m_windowPtr);
   }
 
-  // Renderiza actor
+  if (m_ATrack) {
+    m_ATrack->getComponent<CShape>()->render(m_windowPtr);
+  }
+
   if (m_ACircle) {
-    m_ACircle->render(m_windowPtr);
+    m_ACircle->getComponent<CShape>()->render(m_windowPtr);
   }
 
+  // ðŸŸ£ ImGui Panel de Debug
+  if (!m_ACircle.isNull()) {
+    auto transform = m_ACircle->getComponent<Transform>();
+    sf::Vector2f& position = transform->getPosition();
+    sf::Vector2f& scale = transform->getScale();
+
+    ImGui::Begin("Debug - Yoshi");
+    ImGui::Text("PosiciÃ³n actual:");
+    ImGui::SliderFloat("X", &position.x, 0.0f, 1920.0f);
+    ImGui::SliderFloat("Y", &position.y, 0.0f, 1080.0f);
+
+    ImGui::Text("Escala:");
+    ImGui::SliderFloat("Escala X", &scale.x, 0.1f, 5.0f);
+    ImGui::SliderFloat("Escala Y", &scale.y, 0.1f, 5.0f);
+    ImGui::End();
+  }
+
+  // Renderiza ImGui + SFML
+  m_windowPtr->render();
   m_windowPtr->display();
 }
 
 void BaseApp::destroy() {
-  // Aquí podrías limpiar recursos si fuera necesario
+  // Recursos pueden liberarse aquÃ­ si es necesario
 }

@@ -3,8 +3,8 @@
 #include "../Prerequisites.h"
 #include "Entity.h"
 #include "Cshape.h"
-#include "Transform.h"
-#include "Texture.h"
+#include "../ECS/Transform.h"
+
 /**
  * @class Actor
  * @brief Represents an actor in the game or engine, derived from Entity.
@@ -13,7 +13,7 @@
  * for any in-game object or entity, including component management.
  */
 class
-	Actor :  Entity {
+	Actor : Entity {
 
 public:
 	/**
@@ -74,6 +74,7 @@ public:
 
 	void
 		setTexture(const EngineUtilities::TSharedPointer<Texture>& texture);
+
 	/**
 	 * @brief Retrieves the first component of type T attached to the actor.
 	 *

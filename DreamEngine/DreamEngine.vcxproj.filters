@@ -25,6 +25,9 @@
     <Filter Include="Archivos de encabezado\Utiilities">
       <UniqueIdentifier>{6cf39ccd-cb91-4d8a-be4c-4ace013387f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\imgui">
+      <UniqueIdentifier>{eda471ee-8086-4c85-86fa-50a91090a42d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\Actor.cpp">
@@ -42,8 +45,26 @@
     <ClCompile Include="src\Window.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
-    <ClCompile Include="src\SourceManager.cpp">
+    <ClCompile Include="src\ResourceManager.cpp">
       <Filter>Archivos de recursos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParties\imgui-sfml-master\imgui.cpp">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParties\imgui-sfml-master\imgui_demo.cpp">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParties\imgui-sfml-master\imgui_draw.cpp">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParties\imgui-sfml-master\imgui_tables.cpp">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParties\imgui-sfml-master\imgui_widgets.cpp">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParties\imgui-sfml-master\imgui-SFML.cpp">
+      <Filter>Archivos de encabezado\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,14 +104,41 @@
     <ClInclude Include="include\Utiilities\CVector2.h">
       <Filter>Archivos de encabezado\Utiilities</Filter>
     </ClInclude>
-    <ClInclude Include="include\Transform.h">
-      <Filter>Archivos de encabezado\ECS</Filter>
-    </ClInclude>
     <ClInclude Include="include\ECS\Texture.h">
       <Filter>Archivos de encabezado\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="include\SourceManager.h">
+    <ClInclude Include="include\ResourceManager.h">
       <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imconfig.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imconfig-SFML.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imgui.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imgui_internal.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imgui-SFML.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imgui-SFML_export.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imstb_rectpack.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imstb_textedit.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParties\imgui-sfml-master\imstb_truetype.h">
+      <Filter>Archivos de encabezado\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS\Transform.h">
+      <Filter>Archivos de encabezado\ECS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

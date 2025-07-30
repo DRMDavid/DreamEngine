@@ -1,76 +1,110 @@
 #pragma once
+
 #include "../Prerequisites.h"
 
-class Window;
+class
+	Window;
 
 /**
  * @enum ComponentType
- * @brief Tipos posibles de componentes en el sistema.
+ * @brief Enumerates the possible types of components
+ * that can be attached to entities or actors.
  */
-enum ComponentType {
-  NONE = 0,       /**< Sin tipo */
-  TRANSFORM = 1,  /**< Componente de transformacion (posicion, rotacion, escala) */
-  SPRITE = 2,     /**< Componente de sprite para graficos */
-  RENDERER = 3,   /**< Componente de renderizado */
-  PHYSICS = 4,    /**< Componente de fisica */
-  AUDIOSOURCE = 5,/**< Componente para audio */
-  SHAPE = 6,      /**< Componente para formas geometricas */
-  TEXTURE = 7     /**< Componente de textura */
+enum
+	ComponentType {
+	/** No type specified. */
+	NONE = 0,
+
+	/** Transform component (position, rotation, scale). */
+	TRANSFORM = 1,
+
+	/** Sprite component for 2D graphics. */
+	SPRITE = 2,
+
+	/** Renderer component responsible for drawing. */
+	RENDERER = 3,
+
+	/** Physics component for collision or movement. */
+	PHYSICS = 4,
+
+	/** Audio source component for sound playback. */
+	AUDIOSOURCE = 5,
+
+	/** Shape component (e.g., bounding box, collider shape). */
+	SHAPE = 6,
+
+	/** Texture component for applying images to surfaces. */
+	TEXTURE = 7
 };
 
 /**
  * @class Component
- * @brief Clase base abstracta para componentes que se pueden agregar a entidades o actores.
+ * @brief Abstract base class for all components in the engine.
  *
- * Define la interfaz comun para ciclo de vida y tipo del componente.
+ * Components define behavior and data that can be attached to entities or actors.
+ * Each component has a type and implements basic lifecycle methods.
  */
-class Component {
+class
+	Component {
 public:
-  /**
-   * @brief Constructor por defecto.
-   */
-  Component() = default;
+	/**
+	 * @brief Default constructor.
+	 */
+	Component() = default;
 
-  /**
-   * @brief Constructor con tipo especifico de componente.
-   * @param type Tipo de componente asignado.
-   */
-  Component(const ComponentType type) : m_type(type) {}
+	/**
+	 * @brief Constructs a component with a specific type.
+	 * @param type The type of the component (from ComponentType enum).
+	 */
+	Component(const ComponentType type) : m_type(type) {}
 
-  /**
-   * @brief Destructor virtual por defecto.
-   */
-  virtual ~Component() = default;
+	/**
+	 * @brief Virtual default destructor.
+	 */
+	virtual
+		~Component() = default;
 
-  /**
-   * @brief Metodo virtual puro llamado al iniciar el componente.
-   */
-  virtual void start() = 0;
+	/**
+	 * @brief Called when the component is initialized.
+	 *
+	 * This method should be overridden by derived classes
+	 * to implement custom startup logic.
+	 */
+	virtual void
+		start() = 0;
 
-  /**
-   * @brief Metodo virtual puro para actualizar el componente.
-   * @param deltaTime Tiempo transcurrido desde la ultima actualizacion.
-   */
-  virtual void update(float deltaTime) = 0;
+	/**
+	 * @brief Called once per frame to update the component.
+	 * @param deltaTime Time elapsed since the last frame (in seconds).
+	 */
+	virtual void
+		update(float deltaTime) = 0;
 
-  /**
-   * @brief Metodo virtual puro para renderizar el componente.
-   * @param window Puntero inteligente a la ventana donde se debe dibujar.
-   */
-  virtual void render(const EngineUtilities::TSharedPointer<Window>& window) = 0;
+	/**
+	 * @brief Called to render the component.
+	 * @param window Shared pointer to the window or rendering context.
+	 */
+	virtual void
+		render(const EngineUtilities::TSharedPointer<Window>& window) = 0;
 
-  /**
-   * @brief Metodo virtual puro para destruir o limpiar recursos del componente.
-   */
-  virtual void destroy() = 0;
+	/**
+	 * @brief Called when the component is being destroyed.
+	 *
+	 * This is where you release resources or perform clean-up logic.
+	 */
+	virtual void
+		destroy() = 0;
 
-  /**
-   * @brief Obtiene el tipo del componente.
-   * @return Tipo enumerado ComponentType.
-   */
-  ComponentType getType() const { return m_type; }
+	/**
+	 * @brief Retrieves the type of the component.
+	 * @return The ComponentType of this component.
+	 */
+	ComponentType
+		getType() const { return m_type; }
 
 protected:
-  /// Tipo del componente almacenado
-  ComponentType m_type;
+	/**
+	 * @brief The type of this component.
+	 */
+	ComponentType m_type = ComponentType::NONE;
 };

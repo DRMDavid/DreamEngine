@@ -5,6 +5,7 @@
 class
 	Texture : public Component {
 public:
+
 	Texture() = default;
 
 	Texture(const std::string& textureName, const std::string& extension = "png") :
@@ -13,6 +14,7 @@ public:
 			std::cout << "Error de carga de textura: " << m_textureName << "." << m_extension << std::endl;
 		}
 	}
+
 
 	virtual
 		~Texture() = default;
