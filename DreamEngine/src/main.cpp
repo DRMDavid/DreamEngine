@@ -1,7 +1,7 @@
 #include "BaseApp.h"
 
-int 
+int
 main() {
-  BaseApp app;
-  return app.run();
+	BaseApp app;
+	return app.run();
 }

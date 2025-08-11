@@ -1,101 +1,53 @@
-﻿#pragma once
+#pragma once
 
 #include "Prerequisites.h"
 #include "Window.h"
 #include "CShape.h"
+#include <vector>
 #include "ECS/Actor.h"
-#include <vector> 
+#include "EngineGUI.h"
+#include "ECS/A_Player.h"
+#include "ECS/A_Racer.h"
+#include "Systems/PlayerInputSystem.h"
+#include "Systems/SteeringSystem.h"
+#include "Systems/WaypointFollowSystem.h"
+#include "Systems/RaceSystem.h"
+#include "Components/Countdown.h"
 
-/**
- * @class BaseApp
- * @brief Base application class managing the window,
- * rendering shape, and actor lifecycle.
- *
- * This class provides a general structure for a minimal
- * engine or application loop.
- * It handles window creation, initialization of components, rendering,
- * and cleanup.
- */
-class
-	BaseApp {
+class BaseApp {
 public:
-	/**
-	 * @brief Default constructor.
-	 */
 	BaseApp() = default;
-
-	/**
-	 * @brief Destructor.
-	 *
-	 * Calls the destroy method to clean up resources if necessary.
-	 */
 	~BaseApp();
 
-	/**
-	 * @brief Runs the main application loop.
-	 *
-	 * This function controls the primary execution of the application,
-	 * usually containing the loop that handles updates and rendering.
-	 *
-	 * @return Exit code (typically 0 if successful).
-	 */
-	int
-		run();
-
-	/**
-	 * @brief Initializes the application, window, and resources.
-	 *
-	 * This method must be called before running the main loop.
-	 *
-	 * @return true if initialization was successful; false otherwise.
-	 */
-	bool
-		init();
-
-	/**
-	 * @brief Updates the logic of the application.
-	 *
-	 * Typically called every frame within the main loop to update entities and game state.
-	 */
-	void
-		update();
-
-	/**
-	 * @brief Renders the scene or graphical content.
-	 *
-	 * Called every frame to draw visual elements onto the window.
-	 */
-	void
-		render();
-
-	/**
-	 * @brief Cleans up resources used by the application.
-	 *
-	 * This should be called once the application is closing to ensure memory is released.
-	 */
-	void
-		destroy();
+	int run();
+	bool init();
+	void update();
+	void render();
+	void destroy();
 
 private:
-	/**
-	 * @brief Shared pointer to the main application window.
-	 */
-	EngineUtilities::TSharedPointer<Window> m_windowPtr;
+	EngineUtilities::TSharedPointer<Window>   m_windowPtr;
+	EngineUtilities::TSharedPointer<Actor>    m_ACircle;
+	EngineUtilities::TSharedPointer<Actor>    m_ATrack;
+	EngineUtilities::TSharedPointer<A_Racer>  m_racerNPC;
+	EngineUtilities::TSharedPointer<A_Player> m_player;
+	std::vector<EngineUtilities::TSharedPointer<A_Racer>> m_npcs;
+	std::vector<EngineUtilities::TSharedPointer<Actor>> actorsVector;
+	EngineGUI m_engineGUI;
+	std::vector<sf::Vector2f> m_waypoints;
+	EngineUtilities::TUniquePtr<PlayerInputSystem>    m_playerInputSystem;
+	EngineUtilities::TUniquePtr<SteeringSystem>       m_steeringSystem;
+	EngineUtilities::TUniquePtr<WaypointFollowSystem> m_waypointFollowSystem;
+	EngineUtilities::TUniquePtr<RaceSystem>           m_raceSystem;
+	Countdown m_countdown{ 3.f };
+	bool m_raceArmed = false;
+	bool m_raceLive = false;
+	bool m_raceFinished = false;
+	int  m_finalPlace = -1;
+	int  m_lapsToWin = 3;
+	bool m_npcFinished = false;
+	float m_sharedMaxSpeed = 260.f;
+	float m_npcSpeedFactor = 0.95f;
 
-	/**
-	 * @brief Shared pointer to a shape object used for rendering
-	 * (e.g., a circle or other primitive).
-	 */
-	EngineUtilities::TSharedPointer<CShape> m_shapePtr;
-
-	/**
-	 * @brief Shared pointer to an Actor instance
-	 * (likely representing a game object).
-	 */
-	EngineUtilities::TSharedPointer<Actor> m_ACircle;
-	EngineUtilities::TSharedPointer<Actor> m_ATrack;
-
-	std::vector<sf::Vector2f> m_waypoints;     ///< Lista de puntos a seguir
-	size_t m_currentWaypointIndex = 0;
-
+	void resetRace();
 };

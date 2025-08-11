@@ -1,6 +1,6 @@
 #include "CShape.h"
 #include "Window.h"
-#include "ECS\Texture.h"
+
 void
 CShape::createShape(ShapeType type) {
 	m_shapeType = type;
