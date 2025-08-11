@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @brief Archivo de configuración y utilidades generales (Prerequisites).
+ * @details Contiene definiciones comunes, macros, includes compartidos y
+ *  enumeraciones base usadas en el motor, como tipos de formas y macros
+ *  para manejo seguro de punteros y mensajes de depuración.
+ */
+
 #pragma once
 
 #include <iostream>
@@ -19,11 +27,19 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
-
-
+ /**
+	* @brief Libera un puntero y lo pone en `nullptr` si no es nulo.
+	* @param x Puntero a liberar.
+	*/
 #define SAFE_PTR_RELEASE(x) \
 	if (x != nullptr) { delete x; x = nullptr; }
 
+	/**
+	 * @brief Macro para mostrar un mensaje de creación de recurso.
+	 * @param classObj Nombre de la clase.
+	 * @param method Nombre del método.
+	 * @param state Estado o detalle de la creación.
+	 */
 #define MESSAGE(classObj, method, state)                        \
 {                                                               \
 	std::ostringstream os_;                                     \
@@ -32,6 +48,12 @@
 	std::cerr << os_.str();                                     \
 }
 
+	 /**
+		* @brief Macro para mostrar un mensaje de error y finalizar la ejecución.
+		* @param classObj Nombre de la clase.
+		* @param method Nombre del método.
+		* @param errorMSG Mensaje de error específico.
+		*/
 #define ERROR(classObj, method, errorMSG)                          \
 {                                                                  \
 	std::ostringstream os_;                                        \
@@ -41,11 +63,14 @@
 	exit(1);                                                       \
 }
 
-
+		/**
+		 * @enum ShapeType
+		 * @brief Tipos de forma soportados por el motor.
+		 */
 enum ShapeType {
-	EMPTY = 0,
-	CIRCLE = 1,
-	RECTANGLE = 2,
-	TRIANGLE = 3,
-	POLYGON = 4
+	EMPTY = 0,    ///< Sin forma.
+	CIRCLE = 1,   ///< Círculo.
+	RECTANGLE = 2,///< Rectángulo.
+	TRIANGLE = 3, ///< Triángulo.
+	POLYGON = 4   ///< Polígono.
 };
