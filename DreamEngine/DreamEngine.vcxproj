@@ -52,6 +52,7 @@
     <ClInclude Include="include\ActorSerializer.h" />
     <ClInclude Include="include\BaseApp.h" />
     <ClInclude Include="include\Circuits\Circuit1.h" />
+    <ClInclude Include="include\Circuits\Circuit2.h" />
     <ClInclude Include="include\Components\CountDown.h" />
     <ClInclude Include="include\Components\Lap.h" />
     <ClInclude Include="include\CShape.h" />

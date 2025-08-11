@@ -206,5 +206,8 @@
     <ClInclude Include="include\Systems\WaypointManager.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="include\Circuits\Circuit2.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

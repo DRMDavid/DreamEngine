@@ -1,18 +1,41 @@
+/**
+ * @file
+ * @brief Implementación del sistema de steering (SteeringSystem).
+ * @details Controla el movimiento de los corredores (A_Racer) aplicando
+ * distintos modos de comportamiento: Seek, Arrive y Pursuit.
+ */
+
 #include "Systems/SteeringSystem.h"
 #include <SFML/System/Vector2.hpp>
 #include <algorithm>
 #include <cmath>
 
+ // ============================================================================
+ // Funciones auxiliares internas (namespace anónimo)
+ // ============================================================================
 namespace {
   inline sf::Vector2f vadd(const sf::Vector2f& a, const sf::Vector2f& b) { return { a.x + b.x, a.y + b.y }; }
   inline sf::Vector2f vsub(const sf::Vector2f& a, const sf::Vector2f& b) { return { a.x - b.x, a.y - b.y }; }
   inline sf::Vector2f vscale(const sf::Vector2f& a, float s) { return { a.x * s, a.y * s }; }
   inline float vlen(const sf::Vector2f& a) { return std::sqrt(a.x * a.x + a.y * a.y); }
   inline sf::Vector2f vnorm(const sf::Vector2f& a) {
-    float L = vlen(a); if (L <= 1e-6f) return { 0.f,0.f }; return { a.x / L, a.y / L };
+    float L = vlen(a);
+    if (L <= 1e-6f) return { 0.f, 0.f };
+    return { a.x / L, a.y / L };
   }
 }
 
+// ============================================================================
+// Actualización del sistema
+// ============================================================================
+/**
+ * @brief Actualiza la posición de todos los corredores según su modo de steering.
+ * @param dt Tiempo transcurrido desde el último frame.
+ * @details Recorre todos los corredores y aplica el comportamiento correspondiente:
+ * - Seek: se dirige hacia un objetivo a velocidad constante.
+ * - Arrive: se aproxima reduciendo velocidad al llegar.
+ * - Pursuit: persigue a otro corredor prediciendo su posición futura.
+ */
 void SteeringSystem::update(float dt) {
   for (auto& r : cfg.racers) {
     if (!r || !r->isSteeringEnabled()) continue;
@@ -55,6 +78,17 @@ void SteeringSystem::update(float dt) {
   }
 }
 
+// ============================================================================
+// Comportamiento Arrive
+// ============================================================================
+/**
+ * @brief Calcula la velocidad hacia un objetivo reduciendo velocidad al acercarse.
+ * @param pos Posición actual.
+ * @param target Posición objetivo.
+ * @param speed Velocidad máxima.
+ * @param arriveRadius Radio a partir del cual se empieza a frenar.
+ * @return Vector de velocidad ajustado.
+ */
 sf::Vector2f SteeringSystem::arrive_L(const sf::Vector2f& pos,
   const sf::Vector2f& target,
   float speed, float arriveRadius) {
@@ -65,6 +99,17 @@ sf::Vector2f SteeringSystem::arrive_L(const sf::Vector2f& pos,
   return vscale(vnorm(toT), s);
 }
 
+// ============================================================================
+// Comportamiento Pursuit
+// ============================================================================
+/**
+ * @brief Calcula la velocidad para interceptar a un objetivo en movimiento.
+ * @param self Corredor que persigue.
+ * @param target Corredor objetivo.
+ * @param speed Velocidad máxima.
+ * @param maxPrediction Tiempo máximo de predicción.
+ * @return Vector de velocidad hacia la posición futura del objetivo.
+ */
 sf::Vector2f SteeringSystem::pursuit_L(const A_Racer& self,
   const A_Racer& target,
   float speed, float maxPrediction) {

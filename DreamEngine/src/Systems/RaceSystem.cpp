@@ -1,12 +1,25 @@
-﻿#include "Systems/RaceSystem.h"
+﻿/**
+ * @file
+ * @brief Implementación del sistema de gestión de carreras (RaceSystem).
+ * @details Controla el conteo de vueltas, tiempos por vuelta, posiciones de carrera
+ * y lógica de checkpoints para los actores participantes.
+ */
+
+#include "Systems/RaceSystem.h"
+#include <algorithm>
 #include <cmath>
 #include <limits>
 
-static inline float dist(const sf::Vector2f& A, const sf::Vector2f& B) {
-  float dx = B.x - A.x, dy = B.y - A.y;
-  return std::sqrt(dx * dx + dy * dy);
-}
-
+ // ============================================================================
+ // Constructor
+ // ============================================================================
+ /**
+  * @brief Constructor de RaceSystem.
+  * @param inCfg Configuración inicial de la carrera (actores, waypoints, etc.).
+  * @details Inicializa métricas del circuito, estructuras de datos para progreso,
+  * tiempos y vueltas, además de determinar el checkpoint inicial más cercano
+  * para cada actor.
+  */
 RaceSystem::RaceSystem(const RaceConfig& inCfg)
   : cfg(inCfg) {
 
@@ -59,6 +72,15 @@ RaceSystem::RaceSystem(const RaceConfig& inCfg)
   }
 }
 
+// ============================================================================
+// Actualización por frame
+// ============================================================================
+/**
+ * @brief Actualiza el estado de la carrera.
+ * @param dt Tiempo transcurrido desde el último frame (segundos).
+ * @details Calcula el avance de cada actor en el circuito, detecta paso por
+ * checkpoints, actualiza progreso y cronometra las vueltas del jugador.
+ */
 void RaceSystem::update(float dt) {
   if (!cfg.waypoints || cfg.waypoints->size() < 2) return;
   const auto& W = *cfg.waypoints;
@@ -80,7 +102,6 @@ void RaceSystem::update(float dt) {
     if (a.isNull()) continue;
 
     elapsed[i] += dt;
-
     sf::Vector2f p = getActorPos(a);
 
     int idx = (laps[i].checkpoint < 0) ? 0 : laps[i].checkpoint;
@@ -89,11 +110,11 @@ void RaceSystem::update(float dt) {
     sf::Vector2f wp = W[static_cast<size_t>(idx)];
     sf::Vector2f wpN = W[static_cast<size_t>(next)];
 
-    float d = dist(p, wp);
-    bool near = (d <= cfg.checkpointRadius);
+    float dToCurr = dist(p, wp);
+    bool near = (dToCurr <= cfg.checkpointRadius);
 
     sf::Vector2f seg = { wpN.x - wp.x, wpN.y - wp.y };
-    sf::Vector2f rel = { p.x - wp.x, p.y - wp.y };
+    sf::Vector2f rel = { p.x - wp.x,  p.y - wp.y };
     bool forward = (seg.x * rel.x + seg.y * rel.y) > 0.f;
 
     if (near && forward) {
@@ -115,6 +136,7 @@ void RaceSystem::update(float dt) {
           }
           else {
             laps[i].lap += 1;
+
             if (timingActive) {
               float thisLap = playerLapTime;
               if (thisLap > 0.f) {
@@ -136,10 +158,18 @@ void RaceSystem::update(float dt) {
   }
 }
 
+// ============================================================================
+// Orden de posiciones
+// ============================================================================
+/**
+ * @brief Devuelve el orden de los competidores.
+ * @return Vector con los índices de actores ordenados por progreso descendente.
+ */
 std::vector<int> RaceSystem::getStandings() const {
   std::vector<int> order;
   order.reserve(progress.size());
-  for (size_t i = 0; i < progress.size(); ++i) order.push_back(static_cast<int>(i));
+  for (size_t i = 0; i < progress.size(); ++i)
+    order.push_back(static_cast<int>(i));
 
   std::sort(order.begin(), order.end(), [&](int L, int R) {
     return progress[static_cast<size_t>(L)] > progress[static_cast<size_t>(R)];
@@ -147,6 +177,14 @@ std::vector<int> RaceSystem::getStandings() const {
   return order;
 }
 
+// ============================================================================
+// Funciones utilitarias privadas
+// ============================================================================
+/**
+ * @brief Obtiene la posición actual de un actor.
+ * @param a Puntero compartido al actor.
+ * @return Posición en coordenadas 2D.
+ */
 sf::Vector2f RaceSystem::getActorPos(const EngineUtilities::TSharedPointer<Actor>& a) {
   auto tr = a->getComponent<Transform>();
   if (tr) {
@@ -155,6 +193,13 @@ sf::Vector2f RaceSystem::getActorPos(const EngineUtilities::TSharedPointer<Actor
   return sf::Vector2f{ 0.f, 0.f };
 }
 
+/**
+ * @brief Calcula el progreso relativo de un punto sobre un segmento.
+ * @param p Punto a evaluar.
+ * @param a Punto inicial del segmento.
+ * @param b Punto final del segmento.
+ * @return Valor entre 0 y 1 indicando la posición relativa sobre el segmento.
+ */
 float RaceSystem::segProgress(const sf::Vector2f& p,
   const sf::Vector2f& a,
   const sf::Vector2f& b) const {
@@ -168,6 +213,11 @@ float RaceSystem::segProgress(const sf::Vector2f& p,
   return t;
 }
 
+/**
+ * @brief Calcula la distancia recorrida a lo largo del circuito hasta el punto dado.
+ * @param p Punto en el circuito.
+ * @return Distancia acumulada desde la línea de meta hasta la proyección más cercana.
+ */
 float RaceSystem::sAlongPath(const sf::Vector2f& p) const {
   if (!cfg.waypoints || cfg.waypoints->size() < 2) return 0.f;
   const auto& W = *cfg.waypoints;
@@ -197,6 +247,7 @@ float RaceSystem::sAlongPath(const sf::Vector2f& p) const {
       bestS = base + t * segLen;
     }
   }
+
   if (totalLen > 0.f) {
     if (bestS >= totalLen) bestS = std::fmod(bestS, totalLen);
     if (bestS < 0.f)       bestS += totalLen;
@@ -204,6 +255,9 @@ float RaceSystem::sAlongPath(const sf::Vector2f& p) const {
   return bestS;
 }
 
+/**
+ * @brief Construye la métrica acumulada de distancias entre waypoints.
+ */
 void RaceSystem::buildCircuitMeter() {
   prefix.clear();
   totalLen = 0.f;
@@ -223,4 +277,25 @@ void RaceSystem::buildCircuitMeter() {
   if (closedLoop) {
     totalLen += dist(W[N - 1], W[0]);
   }
+}
+
+// ============================================================================
+// Control explícito del conteo de vueltas
+// ============================================================================
+/**
+ * @brief Activa o desactiva el contador de vueltas inicial.
+ * @param armed Estado del armado del contador.
+ */
+void RaceSystem::armLapCounter(bool armed) {
+  lapArmed = armed;
+  lapCooldown = lapDebounceSec;
+  if (armed) playerLapTime = 0.f;
+}
+
+/**
+ * @brief Define qué actor es el propietario del conteo de vueltas.
+ * @param idx Índice del actor (0 = jugador).
+ */
+void RaceSystem::setLapOwnerIndex(int idx) {
+  lapOwnerIndex = idx;
 }
