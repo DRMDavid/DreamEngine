@@ -19,7 +19,7 @@ Arquitectura **ECS**, render con **SFML** y UI con **ImGui-SFML**.
 | `include/`            | Cabeceras públicas del motor                                                  | Interfaces de ECS, utilidades, tipos comunes, helpers                              |
 | `src/`                | Implementación del runtime                                                    | Lógica del engine y de la demo, inicialización, glue de sistemas                   |
 | `ECS/`                | Núcleo de la arquitectura ECS                                                 | Definición de entidad/ID, registro de componentes, mensajería/eventos              |
-| `Components/`         | Datos puros que describen a las entidades                                     | `Transform`, `CShape`, `LapComponent`, físicos, input, tags, etc.                  |
+| `Components/`         | Datos puros que describen a las entidades                                     | `Transform`, `CShape`, `Lap`, físicos, input, tags, etc.                  |
 | `Systems/`            | Lógica operativa que procesa conjuntos de componentes                         | `PlayerInputSystem`, `WaypointFollowSystem`, `SteeringSystem`, `RaceSystem`, `GUI` |
 | `Circuits/`           | Datos de pistas y rutas                                                       | Waypoints, checkpoints, meta, configuraciones de trazado                            |
 | `Resources/` *(opc.)* | Abstracciones para acceso a recursos                                          | Carga/gestión de texturas, fuentes, cachés                                          |
